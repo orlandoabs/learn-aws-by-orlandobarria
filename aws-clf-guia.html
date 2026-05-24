@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS CLF-C02 · Guía de Estudio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --aws-orange: #FF9900;
+    --aws-dark: #232F3E;
+    --aws-blue: #1A73E8;
+    --aws-teal: #00A1C9;
+    --bg: #0E1117;
+    --surface: #161B27;
+    --surface2: #1E2535;
+    --border: #2A3347;
+    --text: #E8EDF5;
+    --muted: #7B8BA0;
+    --accent: #FF9900;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #1A2236 0%, #0E1117 60%);
+    border-bottom: 2px solid var(--aws-orange);
+    padding: 20px 16px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  header h1 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--aws-orange);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  header p {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--aws-orange);
+    color: #000;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+
+  /* TAB NAV */
+  .tabs {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 0 0 auto;
+    padding: 11px 18px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all .2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tab.active {
+    color: var(--aws-orange);
+    border-bottom-color: var(--aws-orange);
+    background: rgba(255,153,0,0.06);
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 14px 12px 80px; }
+  .section.active { display: block; }
+
+  /* SEARCH */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px 10px 36px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .search-wrap input:focus { border-color: var(--aws-orange); }
+  .search-wrap::before {
+    content: "🔍";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+  }
+
+  /* CATEGORY CHIPS */
+  .chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .chip {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.64rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+    transition: all .2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .chip.active, .chip:hover {
+    background: var(--aws-orange);
+    color: #000;
+    border-color: var(--aws-orange);
+  }
+
+  /* CONCEPT CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: rgba(255,153,0,0.4); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 14px;
+    cursor: pointer;
+  }
+  .card-icon {
+    font-size: 1.4rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .card-title {
+    flex: 1;
+  }
+  .card-title h3 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .card-title span {
+    font-size: 0.63rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    display: block;
+    margin-top: 1px;
+  }
+  .card-arrow {
+    color: var(--muted);
+    font-size: 0.7rem;
+    transition: transform .2s;
+  }
+  .card.open .card-arrow { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 14px 14px;
+    border-top: 1px solid var(--border);
+  }
+  .card.open .card-body { display: block; }
+
+  .card-desc {
+    font-size: 0.78rem;
+    color: #B0BEC5;
+    line-height: 1.65;
+    margin-top: 10px;
+  }
+  .card-example {
+    margin-top: 10px;
+    background: var(--surface2);
+    border-left: 3px solid var(--aws-orange);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 10px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.5;
+  }
+  .card-example strong {
+    color: var(--aws-orange);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .tag {
+    display: inline-block;
+    background: rgba(0,161,201,0.15);
+    color: var(--aws-teal);
+    font-size: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin: 6px 4px 0 0;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .integration {
+    margin-top: 10px;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .integration strong { color: var(--aws-teal); }
+
+  /* SERVICE GRID */
+  .cat-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--aws-orange);
+    font-family: 'JetBrains Mono', monospace;
+    margin: 18px 0 8px;
+    padding-left: 4px;
+    border-left: 3px solid var(--aws-orange);
+    padding-left: 8px;
+  }
+
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .service-card:hover { border-color: rgba(255,153,0,0.3); }
+  .sc-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+  }
+  .sc-icon {
+    font-size: 1.1rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .sc-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex: 1;
+    line-height: 1.2;
+  }
+  .sc-name small {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    margin-top: 1px;
+  }
+  .sc-body {
+    display: none;
+    padding: 0 12px 12px;
+    border-top: 1px solid var(--border);
+  }
+  .service-card.open .sc-body { display: block; }
+  .service-card.open .card-arrow { transform: rotate(180deg); }
+
+  .sc-desc {
+    font-size: 0.75rem;
+    color: #9BAAB8;
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+  .sc-tip {
+    background: var(--surface2);
+    border-left: 3px solid var(--aws-teal);
+    border-radius: 0 6px 6px 0;
+    padding: 7px 9px;
+    font-size: 0.69rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .sc-tip strong { color: var(--aws-teal); display: block; margin-bottom: 2px; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .progress-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--aws-orange);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .progress-bar-wrap {
+    background: var(--surface2);
+    border-radius: 20px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--aws-orange), #FFB84D);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+  .progress-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-box .num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--aws-orange);
+    line-height: 1;
+  }
+  .stat-box .lbl {
+    font-size: 0.6rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+  }
+
+  .domain-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .domain-card h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .domain-card .pct {
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--aws-orange);
+    float: right;
+  }
+  .domain-bar {
+    background: var(--surface2);
+    border-radius: 4px;
+    height: 5px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .domain-bar div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--aws-orange), #FFB84D);
+    border-radius: 4px;
+  }
+  .domain-note {
+    font-size: 0.67rem;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  /* HIDDEN for filter */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>☁️ AWS Cloud Practitioner</h1>
+  <p>CLF-C02 · Guía de Estudio Rápido</p>
+  <span class="badge">EXAM PREP</span>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('overview')">📊 Resumen</div>
+  <div class="tab" onclick="switchTab('conceptos')">🧠 Conceptos</div>
+  <div class="tab" onclick="switchTab('servicios')">⚙️ Servicios</div>
+</div>
+
+<!-- ===== OVERVIEW TAB ===== -->
+<div class="section active" id="tab-overview">
+
+  <div class="summary-grid">
+    <div class="stat-box"><div class="num">65</div><div class="lbl">Preguntas</div></div>
+    <div class="stat-box"><div class="num">90</div><div class="lbl">Minutos</div></div>
+    <div class="stat-box"><div class="num">700</div><div class="lbl">Puntaje min</div></div>
+    <div class="stat-box"><div class="num">4</div><div class="lbl">Dominios</div></div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-title">📋 Dominios del Examen</div>
+    <div class="domain-card">
+      <div class="pct">24%</div>
+      <h4>Dominio 1: Conceptos de la nube</h4>
+      <div class="domain-bar"><div style="width:24%"></div></div>
+      <div class="domain-note">Beneficios de AWS, IaC, modelo de responsabilidad compartida, CAF</div>
+    </div>
+    <div class="domain-card">
+      <div class="pct">30%</div>
+      <h4>Dominio 2: Seguridad y cumplimiento</h4>
+      <div class="domain-bar"><div style="width:30%"></div></div>
+      <div class="domain-note">IAM, Shield, WAF, GuardDuty, KMS, modelo compartido</div>
+    </div>
+    <div class="domain-card">
+      <div class="pct">34%</div>
+      <h4>Dominio 3: Tecnología y servicios</h4>
+      <div class="domain-bar"><div style="width:34%"></div></div>
+      <div class="domain-note">EC2, S3, RDS, Lambda, VPC, CloudFront y más</div>
+    </div>
+    <div class="domain-card">
+      <div class="pct">12%</div>
+      <h4>Dominio 4: Facturación y soporte</h4>
+      <div class="domain-bar"><div style="width:12%"></div></div>
+      <div class="domain-note">Cost Explorer, Budgets, planes de soporte, Pricing Calculator</div>
+    </div>
+  </div>
+
+  <div class="cat-label">🔑 Tips clave para el examen</div>
+  <div class="card open">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">⚡</div>
+      <div class="card-title"><h3>Modelo de Responsabilidad Compartida</h3><span>EL más importante del examen</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">AWS es responsable de la seguridad <strong>DE</strong> la nube (hardware, software, redes, instalaciones). El cliente es responsable de la seguridad <strong>EN</strong> la nube (datos, OS, configuraciones, accesos IAM).</div>
+      <div class="card-example"><strong>📌 Regla mnemotécnica</strong>AWS protege el edificio. Tú pones candado a tu habitación.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">💰</div>
+      <div class="card-title"><h3>Tipos de instancias EC2</h3><span>Pregunta frecuente</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <strong style="color:var(--aws-orange)">On-Demand:</strong> Pagas por hora/segundo, sin compromiso. Ideal para cargas impredecibles.<br><br>
+        <strong style="color:var(--aws-teal)">Reserved:</strong> Compromiso 1-3 años. Hasta 75% de descuento. Ideal para cargas estables.<br><br>
+        <strong style="color:#B39DDB)">Spot:</strong> Usa capacidad no utilizada. Hasta 90% de descuento. Puede interrumpirse. Ideal para workloads tolerantes a fallos.<br><br>
+        <strong style="color:#80CBC4">Savings Plans:</strong> Flexibilidad de On-Demand con descuentos de Reserved.
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🌍</div>
+      <div class="card-title"><h3>Infraestructura Global AWS</h3><span>Regions, AZs, Edge Locations</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <strong style="color:var(--aws-orange)">Región:</strong> Área geográfica con 2+ AZs. Elegida por latencia, compliance y costo.<br><br>
+        <strong style="color:var(--aws-teal)">Zona de Disponibilidad (AZ):</strong> 1+ data center independiente dentro de una región. Conectados con baja latencia.<br><br>
+        <strong style="color:#80CBC4">Edge Locations:</strong> Puntos de presencia para CloudFront y Route 53. Más de 400 en el mundo.
+      </div>
+      <div class="card-example"><strong>📌 Analogía</strong>Región = país, AZ = ciudad, Edge = tienda local de entrega rápida.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">📞</div>
+      <div class="card-title"><h3>Planes de Soporte AWS</h3><span>Saber cuál aplica dónde</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <strong style="color:var(--aws-orange)">Basic:</strong> Gratis. Foros, documentación, Trusted Advisor (7 checks).<br><br>
+        <strong style="color:#FFD54F">Developer:</strong> Desde $29/mes. Soporte por email, tiempo respuesta 12-24h.<br><br>
+        <strong style="color:var(--aws-teal)">Business:</strong> Desde $100/mes. Soporte 24/7, Trusted Advisor completo, <1h respuesta crítica.<br><br>
+        <strong style="color:#CE93D8">Enterprise On-Ramp:</strong> Desde $5,500/mes. TAM pool, 30min respuesta crítica.<br><br>
+        <strong style="color:#EF9A9A">Enterprise:</strong> Desde $15,000/mes. TAM dedicado, 15min respuesta crítica.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== CONCEPTOS TAB ===== -->
+<div class="section" id="tab-conceptos">
+
+  <div class="search-wrap">
+    <input type="text" id="conceptSearch" placeholder="Buscar concepto..." oninput="filterConcepts()">
+  </div>
+
+  <div id="concepto-list">
+
+  <div class="cat-label">☁️ Fundamentos de la nube</div>
+
+  <div class="card" data-tags="api aplicacion programa interfaz">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🔌</div>
+      <div class="card-title"><h3>API (Application Programming Interface)</h3><span>Integración de servicios</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Una API es un conjunto de reglas y protocolos que permiten que diferentes aplicaciones se comuniquen entre sí. En AWS, la mayoría de las acciones se realizan a través de APIs (vía SDK, CLI o Consola).</div>
+      <div class="card-example"><strong>📌 Ejemplo</strong>Cuando usas boto3 (Python) para crear un bucket S3, estás llamando a la API de S3 detrás de escena.</div>
+      <span class="tag">REST</span><span class="tag">HTTP</span><span class="tag">SDK</span>
+    </div>
+  </div>
+
+  <div class="card" data-tags="migracion nube beneficios ventajas caf cloud adoption">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🚀</div>
+      <div class="card-title"><h3>Beneficios de migrar a AWS</h3><span>Por qué moverse a la nube</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Los 6 beneficios clave: <br>1. <strong>Cambio CapEx → OpEx</strong> (pagas por uso) <br>2. <strong>Economías de escala</strong> masivas <br>3. <strong>Capacidad flexible</strong> sin sobre-provisionar <br>4. <strong>Agilidad</strong> para innovar <br>5. <strong>Alcance global</strong> en minutos <br>6. <strong>Eliminar data centers</strong> propios</div>
+      <div class="card-example"><strong>📌 Tip examen</strong>Los 6 beneficios aparecen casi siempre en preguntas sobre "por qué usar AWS".</div>
+    </div>
+  </div>
+
+  <div class="card" data-tags="caf cloud adoption framework migracion estrategia">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🗺️</div>
+      <div class="card-title"><h3>AWS Cloud Adoption Framework (CAF)</h3><span>Marco de adopción</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Marco que guía la adopción de AWS. Tiene 6 perspectivas: <strong>Business, People, Governance</strong> (no técnicas) + <strong>Platform, Security, Operations</strong> (técnicas).</div>
+      <div class="card-example"><strong>📌 Mnemotécnico</strong>BPG + PSO → "Business People Governance, Platform Security Operations"</div>
+      <span class="tag">Migración</span><span class="tag">Estrategia</span>
+    </div>
+  </div>
+
+  <div class="card" data-tags="cumplimiento compliance regulacion conformidad">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">✅</div>
+      <div class="card-title"><h3>Conformidad / Compliance AWS</h3><span>Cumplimiento normativo</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">AWS cumple con múltiples estándares: PCI-DSS, HIPAA, SOC 1/2/3, ISO 27001, GDPR y más. Los clientes heredan los controles de compliance de AWS y pueden ver los reportes en <strong>AWS Artifact</strong>.</div>
+      <div class="card-example"><strong>📌 Herramienta</strong>AWS Artifact = repositorio de reportes de auditoría y acuerdos de compliance. Gratis.</div>
+      <span class="tag">PCI-DSS</span><span class="tag">HIPAA</span><span class="tag">GDPR</span>
+    </div>
+  </div>
+
+  <div class="cat-label">💻 Computación</div>
+
+  <div class="card" data-tags="ec2 instancia virtual servidor compute tipos reservada spot demanda">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🖥️</div>
+      <div class="card-title"><h3>Tipos de instancias EC2</h3><span>On-Demand, Reserved, Spot, Savings Plans</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc"><strong>On-Demand:</strong> Sin compromiso, máxima flexibilidad. <br><strong>Reserved (1-3 años):</strong> Hasta 75% descuento. Standard o Convertible. <br><strong>Spot:</strong> Capacidad sobrante, hasta 90% descuento, se puede interrumpir. <br><strong>Dedicated Hosts:</strong> Servidor físico dedicado (compliance). <br><strong>Savings Plans:</strong> Compromiso de gasto ($/hora), aplica a EC2, Lambda y Fargate.</div>
+      <div class="card-example"><strong>📌 Regla</strong>Predecible → Reserved. Impredecible → On-Demand. Tolerante a fallas → Spot. Regulación → Dedicated.</div>
+    </div>
+  </div>
+
+  <div class="card" data-tags="iac infraestructura codigo cloudformation terraform automatizacion">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">📋</div>
+      <div class="card-title"><h3>Infraestructura como Código (IaC)</h3><span>CloudFormation, Terraform</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Gestión y aprovisionamiento de infraestructura mediante archivos de configuración (YAML/JSON) en lugar de procesos manuales. Permite reproducibilidad, control de versiones y automatización.</div>
+      <div class="card-example"><strong>📌 Servicio AWS</strong>AWS CloudFormation es el servicio nativo de IaC. Crea "stacks" de recursos a partir de templates.</div>
+      <span class="tag">CloudFormation</span><span class="tag">YAML</span><span class="tag">Automatización</span>
+    </div>
+  </div>
+
+  <div class="cat-label">🌐 Infraestructura Global</div>
+
+  <div class="card" data-tags="infraestructura global region zona disponibilidad edge location az">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🌍</div>
+      <div class="card-title"><h3>Infraestructura Global de AWS</h3><span>Regiones, AZs y Edge Locations</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc"><strong>Regiones (~33):</strong> Áreas geográficas independientes con 3+ AZs. Elegir según: latencia, compliance, costo, disponibilidad de servicios. <br><br><strong>AZs (~105):</strong> Uno o más data centers con energía, red y conectividad redundante. <br><br><strong>Edge Locations (400+):</strong> Puntos para CloudFront (CDN) y Route 53.</div>
+      <div class="card-example"><strong>📌 Multi-AZ vs Multi-Region</strong>Multi-AZ = alta disponibilidad. Multi-Region = recuperación ante desastres + baja latencia global.</div>
+    </div>
+  </div>
+
+  <div class="cat-label">🔒 Seguridad y Modelos</div>
+
+  <div class="card" data-tags="responsabilidad compartida shared responsibility model seguridad">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🛡️</div>
+      <div class="card-title"><h3>Modelo de Responsabilidad Compartida</h3><span>AWS vs Cliente</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc"><strong>AWS (DE la nube):</strong> Hardware, software global, AZs, regiones, edge locations, hypervisor. <br><br><strong>Cliente (EN la nube):</strong> Datos, cifrado, OS (IaaS), red virtual, firewall, IAM, configuraciones de apps.</div>
+      <div class="card-example"><strong>📌 Casos prácticos</strong>¿Quién parchea el OS de EC2? → El cliente. ¿Quién asegura el hardware? → AWS. ¿RDS OS patch? → AWS (servicio gestionado).</div>
+      <span class="tag">IAM</span><span class="tag">Seguridad</span><span class="tag">Compliance</span>
+    </div>
+  </div>
+
+  <div class="cat-label">💰 Facturación y Soporte</div>
+
+  <div class="card" data-tags="precios calculadora pricing calculator costo estimacion">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🧮</div>
+      <div class="card-title"><h3>Calculadora de Precios AWS</h3><span>aws.amazon.com/calculator</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Herramienta gratuita para estimar el costo mensual de los servicios AWS antes de migrar. Puedes crear escenarios y comparar configuraciones.</div>
+      <div class="card-example"><strong>📌 Diferencia</strong>Pricing Calculator = ESTIMACIÓN futura. Cost Explorer = ANÁLISIS del gasto real histórico.</div>
+    </div>
+  </div>
+
+  <div class="card" data-tags="well architected framework pilar excelencia operacional seguridad fiabilidad eficiencia sostenibilidad">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🏗️</div>
+      <div class="card-title"><h3>AWS Well-Architected Framework</h3><span>6 pilares de buenas prácticas</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">Marco con 6 pilares para diseñar arquitecturas robustas:<br>
+      1. <strong>Excelencia Operacional</strong> – Automatizar, monitorear<br>
+      2. <strong>Seguridad</strong> – IAM, cifrado, trazabilidad<br>
+      3. <strong>Fiabilidad</strong> – Auto-recover, multi-AZ<br>
+      4. <strong>Eficiencia del rendimiento</strong> – Serverless, CDN<br>
+      5. <strong>Optimización de costos</strong> – Reserved, Spot<br>
+      6. <strong>Sostenibilidad</strong> – Reducir huella de carbono</div>
+      <div class="card-example"><strong>📌 Herramienta</strong>AWS Well-Architected Tool = cuestionario gratuito para evaluar tu arquitectura.</div>
+      <span class="tag">OSREPS</span>
+    </div>
+  </div>
+
+  <div class="card" data-tags="machine learning ml ia inteligencia artificial">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🤖</div>
+      <div class="card-title"><h3>Machine Learning en AWS</h3><span>SageMaker, Rekognition, Lex...</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">AWS ofrece servicios ML en 3 capas: <br><strong>AI Services (preconstruidos):</strong> Rekognition (imágenes), Polly (texto a voz), Lex (chatbots), Translate, Comprehend (NLP). <br><strong>ML Platforms:</strong> SageMaker (entrenar/desplegar modelos). <br><strong>Frameworks:</strong> TensorFlow, PyTorch en EC2/SageMaker.</div>
+      <div class="card-example"><strong>📌 Tip</strong>Para el examen, diferencia servicios AI listos-para-usar (Rekognition) vs plataformas para entrenar modelos propios (SageMaker).</div>
+    </div>
+  </div>
+
+  <div class="card" data-tags="sdk cli herramientas developer tools codigo programa">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🛠️</div>
+      <div class="card-title"><h3>AWS SDK y CLI</h3><span>Acceso programático</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc"><strong>AWS SDK:</strong> Bibliotecas para Python (boto3), Java, JS, .NET, Go, etc. Permiten integrar servicios AWS en tu código. <br><br><strong>AWS CLI:</strong> Interfaz de línea de comandos para gestionar recursos AWS desde la terminal. Usa las mismas APIs.</div>
+      <div class="card-example"><strong>📌 Ejemplo CLI</strong>aws s3 cp archivo.txt s3://mi-bucket/ → Sube un archivo a S3 desde la terminal.</div>
+      <span class="tag">boto3</span><span class="tag">Python</span><span class="tag">Terminal</span>
+    </div>
+  </div>
+
+  <div class="card" data-tags="soporte trusted advisor repost knowledge center professional services">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon">🤝</div>
+      <div class="card-title"><h3>Recursos de Soporte AWS</h3><span>APN, Professional Services, re:Post</span></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+      <strong>AWS Knowledge Center:</strong> FAQs técnicas y resolución de problemas comunes. <br>
+      <strong>AWS re:Post:</strong> Comunidad Q&A (reemplazó los foros AWS). <br>
+      <strong>AWS Professional Services:</strong> Equipo experto de AWS que ayuda en migraciones y proyectos. <br>
+      <strong>Red de Socios (APN):</strong> Consultoras y tecnologías certificadas por AWS. <br>
+      <strong>Arquitectos de Soluciones:</strong> Expertos que ayudan a diseñar arquitecturas (Enterprise Support).
+      </div>
+    </div>
+  </div>
+
+  </div><!-- end concepto-list -->
+</div>
+
+<!-- ===== SERVICIOS TAB ===== -->
+<div class="section" id="tab-servicios">
+
+  <div class="search-wrap">
+    <input type="text" id="serviceSearch" placeholder="Buscar servicio..." oninput="filterServices()">
+  </div>
+
+  <div class="chips" id="catChips">
+    <div class="chip active" onclick="filterCat(this,'all')">Todos</div>
+    <div class="chip" onclick="filterCat(this,'analytics')">📊 Análisis</div>
+    <div class="chip" onclick="filterCat(this,'integration')">🔗 Integración</div>
+    <div class="chip" onclick="filterCat(this,'compute')">💻 Cómputo</div>
+    <div class="chip" onclick="filterCat(this,'database')">🗄️ BD</div>
+    <div class="chip" onclick="filterCat(this,'security')">🔒 Seguridad</div>
+    <div class="chip" onclick="filterCat(this,'storage')">💾 Storage</div>
+    <div class="chip" onclick="filterCat(this,'network')">🌐 Redes</div>
+    <div class="chip" onclick="filterCat(this,'ml')">🤖 ML/IA</div>
+    <div class="chip" onclick="filterCat(this,'mgmt')">⚙️ Gestión</div>
+    <div class="chip" onclick="filterCat(this,'migration')">🚚 Migración</div>
+    <div class="chip" onclick="filterCat(this,'serverless')">⚡ Serverless</div>
+    <div class="chip" onclick="filterCat(this,'devtools')">🛠️ Dev Tools</div>
+    <div class="chip" onclick="filterCat(this,'finance')">💰 Costos</div>
+  </div>
+
+  <div id="service-list">
+
+  <!-- ANALYTICS -->
+  <div class="cat-label" data-cat="analytics">📊 Análisis</div>
+
+  <div class="service-card" data-cat="analytics" data-tags="athena sql s3 consulta query analisis">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔍</div>
+      <div class="sc-name">Amazon Athena<small>Query SQL serverless sobre S3</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio de consultas interactivo que analiza datos en S3 usando SQL estándar. Serverless (no hay infraestructura que gestionar), pagas solo por los datos escaneados.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>S3 (fuente datos) → Athena (SQL) → QuickSight (visualización)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="analytics" data-tags="emr hadoop spark big data cluster mapreduce">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">⚡</div>
+      <div class="sc-name">Amazon EMR<small>Elastic MapReduce – Big Data</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Plataforma cloud de Big Data para procesar grandes volúmenes de datos usando Apache Hadoop, Spark, HBase, etc. Gestiona el aprovisionamiento y la configuración de clústeres.</div>
+      <div class="sc-tip"><strong>💡 Caso de uso</strong>ETL masivo, análisis de logs, machine learning con SparkML.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="analytics" data-tags="glue etl catalogo datos pipeline transformacion">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔧</div>
+      <div class="sc-name">AWS Glue<small>ETL serverless y Data Catalog</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio ETL (Extract, Transform, Load) completamente gestionado. Descubre, cataloga y transforma datos de múltiples fuentes. Incluye Data Catalog para metadatos.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>RDS/S3 → Glue (ETL) → Redshift (DW) → QuickSight (BI)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="analytics" data-tags="kinesis streaming tiempo real datos flujo">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🌊</div>
+      <div class="sc-name">Amazon Kinesis<small>Streaming de datos en tiempo real</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Suite para capturar, procesar y analizar datos en streaming en tiempo real. Incluye Kinesis Data Streams, Firehose (carga a S3/Redshift), y Data Analytics (SQL sobre streams).</div>
+      <div class="sc-tip"><strong>💡 Caso de uso</strong>Análisis de clickstream, monitoreo IoT, logs en tiempo real.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="analytics" data-tags="opensearch elasticsearch busqueda logs analisis">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔎</div>
+      <div class="sc-name">Amazon OpenSearch Service<small>Búsqueda y análisis de logs</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio gestionado basado en OpenSearch (fork de Elasticsearch). Ideal para búsqueda full-text, análisis de logs y monitoreo con dashboards Kibana/OpenSearch Dashboards.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>CloudWatch Logs → OpenSearch → Dashboard Kibana</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="analytics" data-tags="quicksight bi business intelligence visualizacion dashboard graficos">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📈</div>
+      <div class="sc-name">Amazon QuickSight<small>Business Intelligence y dashboards</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio de BI serverless para crear visualizaciones, dashboards interactivos y reportes. Se conecta a Redshift, S3, RDS, Athena y más. SPICE = in-memory engine para rendimiento.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>QuickSight = visualización BI. No confundir con CloudWatch (monitoring operativo).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="analytics" data-tags="redshift data warehouse almacen datos analytics sql">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🏭</div>
+      <div class="sc-name">Amazon Redshift<small>Data Warehouse en la nube</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Data warehouse en columnas a escala de petabytes. Para análisis OLAP (no OLTP). Redshift Serverless permite análisis sin gestionar clústeres. Muy integrado con S3 (Redshift Spectrum).</div>
+      <div class="sc-tip"><strong>💡 OLAP vs OLTP</strong>Redshift = análisis histórico. RDS/Aurora = transacciones operacionales.</div>
+    </div>
+  </div>
+
+  <!-- INTEGRATION -->
+  <div class="cat-label" data-cat="integration">🔗 Integración de Aplicaciones</div>
+
+  <div class="service-card" data-cat="integration" data-tags="eventbridge eventos bus reglas automatizacion">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🚌</div>
+      <div class="sc-name">Amazon EventBridge<small>Bus de eventos serverless</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Bus de eventos serverless para conectar aplicaciones con datos de tus apps, servicios SaaS y AWS. Define reglas para enrutar eventos a targets (Lambda, SQS, SNS, etc.).</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>App genera evento → EventBridge (regla) → Lambda (procesa) → DynamoDB (guarda)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="integration" data-tags="sns notificacion pub sub push email sms">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📢</div>
+      <div class="sc-name">Amazon SNS<small>Simple Notification Service – Pub/Sub</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio de mensajería Pub/Sub totalmente gestionado. Envía notificaciones a múltiples suscriptores (email, SMS, Lambda, SQS, HTTP). Un mensaje → muchos destinos (fan-out).</div>
+      <div class="sc-tip"><strong>💡 SNS vs SQS</strong>SNS = push a múltiples consumidores. SQS = cola donde el consumidor hace pull.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="integration" data-tags="sqs cola mensajes queue desacoplamiento decoupling">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📬</div>
+      <div class="sc-name">Amazon SQS<small>Simple Queue Service – Cola de mensajes</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Cola de mensajes totalmente gestionada para desacoplar componentes. Standard (at-least-once) o FIFO (exactamente-una-vez, orden garantizado). Retención hasta 14 días.</div>
+      <div class="sc-tip"><strong>💡 Patrón</strong>SNS (fan-out) → SQS queues → Lambda/EC2 (procesadores independientes)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="integration" data-tags="step functions workflow orquestacion lambda pasos flujo">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔄</div>
+      <div class="sc-name">AWS Step Functions<small>Orquestación de workflows</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Orquesta funciones Lambda y servicios AWS en workflows visuales (máquinas de estado). Maneja errores, reintentos y paralelismo. Ideal para procesos de negocio complejos.</div>
+      <div class="sc-tip"><strong>💡 Caso de uso</strong>Checkout e-commerce: verificar stock → cobrar → enviar email → actualizar inventario.</div>
+    </div>
+  </div>
+
+  <!-- COMPUTE -->
+  <div class="cat-label" data-cat="compute">💻 Computación</div>
+
+  <div class="service-card" data-cat="compute" data-tags="batch procesamiento lotes jobs cola trabajo">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📦</div>
+      <div class="sc-name">AWS Batch<small>Procesamiento por lotes gestionado</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Ejecuta jobs de batch a cualquier escala. Aprovisiona automáticamente los recursos de cómputo óptimos (EC2 o Spot). Ideal para simulaciones, análisis genómicos, renderizado.</div>
+      <div class="sc-tip"><strong>💡 vs Lambda</strong>Batch = jobs largos (horas). Lambda = funciones cortas (&lt;15 min).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="compute" data-tags="ec2 instancia virtual servidor maquina compute">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🖥️</div>
+      <div class="sc-name">Amazon EC2<small>Elastic Compute Cloud – VMs en la nube</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servidores virtuales en la nube. Elige tipo (t3, m5, c5, r5...), OS, almacenamiento (EBS). IaaS = tú gestionas el OS, parches y middleware. Múltiples modelos de precios.</div>
+      <div class="sc-tip"><strong>💡 Familias</strong>t = propósito general. c = cómputo optimizado. r = memoria. i = storage. p/g = GPU (ML).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="compute" data-tags="elastic beanstalk paas aplicacion despliegue automatico plataforma">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🌱</div>
+      <div class="sc-name">AWS Elastic Beanstalk<small>PaaS – Despliegue automático</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Sube tu código y Beanstalk gestiona automáticamente: EC2, load balancer, auto scaling, actualizaciones. PaaS para Node, Python, Java, .NET, PHP, Ruby, Go, Docker.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Beanstalk = PaaS (tú controlas la app, AWS gestiona la infra). Sin costo adicional, solo pagas la infra.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="compute" data-tags="lightsail vps simple pequeno startup wordpress">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">💡</div>
+      <div class="sc-name">Amazon Lightsail<small>VPS simple para beginners</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servidores virtuales simples con precio fijo mensual. Incluye cómputo, almacenamiento, transferencia de datos y DNS. Ideal para WordPress, apps pequeñas, startups.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Lightsail = simplicidad y precio fijo. EC2 = flexibilidad y control total.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="compute" data-tags="outposts hibrido on-premise aws local datacenter">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🏢</div>
+      <div class="sc-name">AWS Outposts<small>AWS en tu data center</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Racks de hardware AWS instalados en tu data center on-premise. Extiende la nube AWS a instalaciones físicas. Mismos servicios y APIs de AWS, pero local para baja latencia o requisitos de soberanía de datos.</div>
+      <div class="sc-tip"><strong>💡 Cuándo usar</strong>Cuando necesitas procesamiento local pero con APIs y herramientas AWS.</div>
+    </div>
+  </div>
+
+  <!-- CONTAINERS -->
+  <div class="cat-label" data-cat="compute">📦 Contenedores</div>
+
+  <div class="service-card" data-cat="compute" data-tags="ecr registry registro contenedor docker imagen">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🗃️</div>
+      <div class="sc-name">Amazon ECR<small>Elastic Container Registry</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Registro privado de imágenes Docker totalmente gestionado. Almacena, gestiona y despliega imágenes de contenedores. Integrado con ECS y EKS.</div>
+      <div class="sc-tip"><strong>💡 Flujo CI/CD</strong>CodeBuild (build) → ECR (push imagen) → ECS/EKS (deploy)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="compute" data-tags="ecs contenedor docker orquestacion cluster task service">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🐳</div>
+      <div class="sc-name">Amazon ECS<small>Elastic Container Service</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Orquestador de contenedores Docker totalmente gestionado. Ejecuta contenedores en EC2 (tú gestionas el servidor) o con Fargate (serverless). Integrado con IAM, ALB, CloudWatch.</div>
+      <div class="sc-tip"><strong>💡 ECS vs EKS</strong>ECS = más simple, AWS-nativo. EKS = Kubernetes estándar, más portabilidad.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="compute" data-tags="eks kubernetes k8s orquestacion contenedor">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">☸️</div>
+      <div class="sc-name">Amazon EKS<small>Elastic Kubernetes Service</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Kubernetes gestionado en AWS. AWS gestiona el control plane de K8s. Ejecuta workers en EC2 o Fargate. Portable a otros clouds. Ideal si ya tienes expertise en K8s.</div>
+      <div class="sc-tip"><strong>💡 Tip</strong>EKS Anywhere = Kubernetes en on-premise gestionado por AWS.</div>
+    </div>
+  </div>
+
+  <!-- DATABASE -->
+  <div class="cat-label" data-cat="database">🗄️ Base de Datos</div>
+
+  <div class="service-card" data-cat="database" data-tags="aurora mysql postgresql relacional rds compatible alto rendimiento">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">⚡</div>
+      <div class="sc-name">Amazon Aurora<small>BD relacional de alto rendimiento AWS</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">BD relacional propietaria de AWS, compatible con MySQL y PostgreSQL. 5x más rápida que MySQL estándar, 3x que PostgreSQL. Auto-scaling de storage, replicación multi-AZ automática.</div>
+      <div class="sc-tip"><strong>💡 Aurora Serverless</strong>Escala automáticamente según la demanda, incluso a 0. Ideal para cargas intermitentes.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="database" data-tags="documentdb mongodb nosql documentos json">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📄</div>
+      <div class="sc-name">Amazon DocumentDB<small>BD de documentos compatible con MongoDB</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Base de datos de documentos JSON totalmente gestionada, compatible con la API de MongoDB. Escala hasta millones de requests/segundo. Ideal para CMS, catálogos, perfiles de usuario.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>MongoDB en AWS → DocumentDB. Clave-valor → DynamoDB. Grafos → Neptune.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="database" data-tags="dynamodb nosql clave valor tabla serverless milisegundos">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">⚡</div>
+      <div class="sc-name">Amazon DynamoDB<small>NoSQL serverless de baja latencia</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">BD clave-valor y documentos totalmente serverless. Latencia de single-digit milliseconds a cualquier escala. Auto-scaling, multi-region con Global Tables, backup continuo (PITR).</div>
+      <div class="sc-tip"><strong>💡 DAX</strong>DynamoDB Accelerator = caché en memoria para DynamoDB. Microsegundos de latencia.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="database" data-tags="elasticache redis memcached cache memoria rapido">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🚀</div>
+      <div class="sc-name">Amazon ElastiCache<small>Caché en memoria (Redis/Memcached)</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio de caché en memoria totalmente gestionado. Compatible con Redis (más features: pub/sub, persistencia, Lua) y Memcached (más simple). Reduce latencia de BD.</div>
+      <div class="sc-tip"><strong>💡 Patrón</strong>App → ElastiCache (si hay hit, responde en microsegundos) → si miss → RDS/DynamoDB</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="database" data-tags="neptune grafos graph neo4j redes sociales relaciones">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🕸️</div>
+      <div class="sc-name">Amazon Neptune<small>Base de datos de grafos</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">BD de grafos totalmente gestionada. Soporta Gremlin (Apache TinkerPop) y SPARQL. Ideal para redes sociales, recomendaciones, detección de fraude, grafos de conocimiento.</div>
+      <div class="sc-tip"><strong>💡 Cuándo usar</strong>Cuando las relaciones entre entidades son tan importantes como los datos mismos.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="database" data-tags="rds relacional mysql postgresql oracle sqlserver mariadb gestionado">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🗄️</div>
+      <div class="sc-name">Amazon RDS<small>Relational Database Service</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">BD relacionales gestionadas: MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, Aurora. AWS gestiona: parches, backups, Multi-AZ. Tú eliges el motor y el tamaño de instancia.</div>
+      <div class="sc-tip"><strong>💡 RDS Multi-AZ</strong>Standby en otra AZ para DR automático. NO mejora rendimiento de lectura (usa Read Replicas para eso).</div>
+    </div>
+  </div>
+
+  <!-- SECURITY -->
+  <div class="cat-label" data-cat="security">🔒 Seguridad, Identidad y Cumplimiento</div>
+
+  <div class="service-card" data-cat="security" data-tags="artifact reportes auditoria compliance sox pci iso">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📋</div>
+      <div class="sc-name">AWS Artifact<small>Reportes de auditoría y compliance</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Portal de autoservicio para descargar reportes de seguridad y compliance de AWS (SOC, PCI, ISO). También para revisar y aceptar acuerdos (BAA, NDA) con AWS. Totalmente gratis.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Cliente necesita reportes de auditoría de AWS → AWS Artifact (no confundir con AWS Audit Manager).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="security" data-tags="cognito autenticacion usuario login social pool identidad">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">👤</div>
+      <div class="sc-name">Amazon Cognito<small>Autenticación para apps web y móvil</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Gestión de identidad para apps. User Pools (directorio de usuarios, login, MFA) + Identity Pools (federar identidades para acceder a AWS). Soporta OAuth2, OIDC, SAML, social login.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Autenticación de usuarios finales de tu app → Cognito. Empleados acceden a AWS → IAM Identity Center.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="security" data-tags="guardduty amenazas deteccion seguridad inteligencia threat">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔫</div>
+      <div class="sc-name">Amazon GuardDuty<small>Detección de amenazas con ML</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio de detección de amenazas que monitorea continuamente tu cuenta AWS usando ML e inteligencia de amenazas. Analiza CloudTrail, VPC Flow Logs y DNS logs. Sin agentes, sin infra.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>GuardDuty detecta → EventBridge → Lambda (remediación automática) → SNS (alerta)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="security" data-tags="iam usuario rol politica permisos acceso identidad gestion">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔑</div>
+      <div class="sc-name">AWS IAM<small>Identity and Access Management</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Controla quién puede hacer qué en AWS. Usuarios, Grupos, Roles y Políticas (JSON). Principio de mínimo privilegio. IAM es global (no por región). MFA recomendado para root y usuarios.</div>
+      <div class="card-example" style="margin-top:8px;font-size:0.69rem;background:var(--surface2);border-left:3px solid var(--aws-orange);border-radius:0 6px 6px 0;padding:7px 9px;color:var(--muted);font-family:'JetBrains Mono',monospace">
+        <strong style="color:var(--aws-orange);display:block;margin-bottom:2px;font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em">💡 Componentes</strong>
+        Usuario = persona. Grupo = conjunto de usuarios. Rol = identidad temporal (para servicios o federación). Política = permisos JSON.
+      </div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="security" data-tags="kms llave cifrado encriptacion clave administracion key management">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔐</div>
+      <div class="sc-name">AWS KMS<small>Key Management Service</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Crea y gestiona claves de cifrado para proteger datos en S3, EBS, RDS, etc. CMKs (Customer Managed Keys) o AWS Managed Keys. FIPS 140-2 Level 2. Auditable vía CloudTrail.</div>
+      <div class="sc-tip"><strong>💡 KMS vs CloudHSM</strong>KMS = multi-tenant, gestionado por AWS. CloudHSM = hardware dedicado, tú controlas las claves.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="security" data-tags="shield ddos proteccion ataque distributed denial">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🛡️</div>
+      <div class="sc-name">AWS Shield<small>Protección DDoS</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc"><strong>Shield Standard:</strong> Gratuito, automático para todos los usuarios AWS. Protección capa 3 y 4. <br><strong>Shield Advanced:</strong> $3,000/mes. Protección capa 7, DRT (DDoS Response Team), protección de costo.</div>
+      <div class="sc-tip"><strong>💡 Combinación</strong>Shield Advanced + WAF + CloudFront = protección completa DDoS.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="security" data-tags="waf web application firewall reglas http inyeccion sql xss">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🧱</div>
+      <div class="sc-name">AWS WAF<small>Web Application Firewall</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Protege apps web de ataques comunes: SQL injection, XSS, bots. Define reglas para bloquear/permitir tráfico HTTP. Se despliega en CloudFront, ALB, API Gateway, AppSync.</div>
+      <div class="sc-tip"><strong>💡 Managed Rules</strong>AWS ofrece grupos de reglas gestionadas (OWASP Top 10, Bot Control) listas para usar.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="security" data-tags="secrets manager secreto contraseña credencial rotacion automatica">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔏</div>
+      <div class="sc-name">AWS Secrets Manager<small>Gestión segura de secretos</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Almacena y rota automáticamente secretos: contraseñas de BD, API keys, tokens. Rotación automática integrada con RDS. Elimina credenciales hardcodeadas en el código.</div>
+      <div class="sc-tip"><strong>💡 vs Parameter Store</strong>Secrets Manager = rotación automática, más caro. SSM Parameter Store = más simple, más barato.</div>
+    </div>
+  </div>
+
+  <!-- STORAGE -->
+  <div class="cat-label" data-cat="storage">💾 Almacenamiento</div>
+
+  <div class="service-card" data-cat="storage" data-tags="s3 bucket objeto almacenamiento archivos blobs storage">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🪣</div>
+      <div class="sc-name">Amazon S3<small>Simple Storage Service – Object Storage</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Almacenamiento de objetos ilimitado. Clases: S3 Standard, S3-IA, S3 One Zone-IA, S3 Glacier Instant, Glacier Flexible, Glacier Deep Archive. Versioning, lifecycle policies, replication.</div>
+      <div class="sc-tip"><strong>💡 Clases de almacenamiento</strong>Standard → IA → One Zone-IA → Glacier Instant → Glacier Flexible → Deep Archive (más barato, más lento).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="storage" data-tags="s3 glacier archivo largo plazo frio cold storage">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">❄️</div>
+      <div class="sc-name">Amazon S3 Glacier<small>Archivo de largo plazo</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Almacenamiento de largo plazo ultra-económico para datos raramente accedidos. Glacier Instant (ms), Flexible (minutos-horas), Deep Archive (12-48h). Hasta 95% más barato que S3 Standard.</div>
+      <div class="sc-tip"><strong>💡 Caso de uso</strong>Backups de compliance, archivos médicos, logs de auditoría que debes conservar años.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="storage" data-tags="ebs elastic block store volumen disco duro ec2">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">💽</div>
+      <div class="sc-name">Amazon EBS<small>Elastic Block Store – Disco para EC2</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Almacenamiento de bloques persistente para EC2. Como un disco duro en la nube. Tipos: gp3/gp2 (general), io1/io2 (IOPS alto), sc1/st1 (throughput). Replicado dentro de la AZ.</div>
+      <div class="sc-tip"><strong>💡 S3 vs EBS</strong>EBS = disco para EC2 (bloque, una AZ). S3 = almacenamiento de objetos (global, acceso HTTP).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="storage" data-tags="efs elastic file system nfs compartido linux">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📁</div>
+      <div class="sc-name">Amazon EFS<small>Elastic File System – NFS gestionado</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Sistema de archivos NFS elástico y gestionado para Linux. Se monta en múltiples instancias EC2 simultáneamente (a diferencia de EBS). Escala automáticamente, multi-AZ.</div>
+      <div class="sc-tip"><strong>💡 EBS vs EFS</strong>EBS = una instancia EC2. EFS = compartido entre muchas instancias simultáneamente.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="storage" data-tags="storage gateway hibrido onpremise nube local cache">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔀</div>
+      <div class="sc-name">AWS Storage Gateway<small>Almacenamiento híbrido on-premise ↔ AWS</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Conecta on-premise con almacenamiento en la nube AWS. Tipos: File Gateway (NFS/SMB → S3), Volume Gateway (iSCSI → EBS/S3), Tape Gateway (VTL → Glacier). Para migraciones híbridas.</div>
+      <div class="sc-tip"><strong>💡 Caso de uso</strong>Empresa con sistemas legacy que quiere backup automático a S3 sin cambiar sus aplicaciones.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="storage" data-tags="backup respaldo automatico politica centralizado">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">💾</div>
+      <div class="sc-name">AWS Backup<small>Backup centralizado y automatizado</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio centralizado para automatizar y auditar backups de EC2, EBS, RDS, DynamoDB, EFS, FSx, Storage Gateway. Define políticas de backup unificadas para toda la organización.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Necesita backup centralizado multi-servicio → AWS Backup. No necesitas configurar backups individualmente.</div>
+    </div>
+  </div>
+
+  <!-- NETWORK -->
+  <div class="cat-label" data-cat="network">🌐 Redes y Entrega de Contenido</div>
+
+  <div class="service-card" data-cat="network" data-tags="vpc red virtual privada subred subnet seguridad aislamiento">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🏘️</div>
+      <div class="sc-name">Amazon VPC<small>Virtual Private Cloud</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Red virtual aislada lógicamente dentro de AWS. Define tu espacio de IPs, subnets (públicas/privadas), tablas de rutas, internet gateways, NAT gateways, security groups y NACLs.</div>
+      <div class="sc-tip"><strong>💡 Security Groups vs NACL</strong>Security Groups = stateful, nivel instancia. NACLs = stateless, nivel subnet.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="network" data-tags="cloudfront cdn distribucion contenido cache edge rapido">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">⚡</div>
+      <div class="sc-name">Amazon CloudFront<small>CDN global – Entrega de contenido</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Red de entrega de contenido (CDN) con 400+ edge locations. Cachea contenido estático y dinámico cerca del usuario. Integrado con S3, ALB, EC2, Lambda@Edge. Reduce latencia global.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>S3 (origen) → CloudFront (distribución) → Usuario final (edge location más cercana)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="network" data-tags="route53 dns dominio resolucion nombres registro">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🗺️</div>
+      <div class="sc-name">Amazon Route 53<small>DNS gestionado y registro de dominios</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">DNS escalable y altamente disponible + registro de dominios. Políticas de enrutamiento: Simple, Weighted, Latency, Failover, Geolocation, Geoproximity, Multivalue. Health checks integrados.</div>
+      <div class="sc-tip"><strong>💡 Failover</strong>Route 53 detecta que el primary está caído (health check) y redirige tráfico al secondary automáticamente.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="network" data-tags="direct connect conexion dedicada fibra optica privada on-premise">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔌</div>
+      <div class="sc-name">AWS Direct Connect<small>Conexión dedicada on-premise ↔ AWS</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Conexión de red privada dedicada (fibra) entre tu data center y AWS. Evita internet público → menor latencia, mayor ancho de banda, más consistente. Velocidades de 1Gbps a 100Gbps.</div>
+      <div class="sc-tip"><strong>💡 Direct Connect vs VPN</strong>DX = dedicado, caro, sin internet. VPN = sobre internet, cifrado, rápido de configurar.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="network" data-tags="api gateway rest http websocket microservicios backend">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🚪</div>
+      <div class="sc-name">Amazon API Gateway<small>Crear y gestionar APIs</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Crea, publica y gestiona APIs REST, HTTP y WebSocket a cualquier escala. Integrado con Lambda (arquitectura serverless), EC2, servicios AWS. Throttling, caching, autorización.</div>
+      <div class="sc-tip"><strong>💡 Patrón serverless</strong>Cliente → API Gateway → Lambda → DynamoDB (backend completamente serverless)</div>
+    </div>
+  </div>
+
+  <!-- ML -->
+  <div class="cat-label" data-cat="ml">🤖 Machine Learning</div>
+
+  <div class="service-card" data-cat="ml" data-tags="sagemaker entrenar modelo ml machine learning deploy">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🧠</div>
+      <div class="sc-name">Amazon SageMaker AI<small>Plataforma ML end-to-end</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Plataforma completa para construir, entrenar y desplegar modelos ML. Jupyter notebooks gestionados, algoritmos preconstruidos, entrenamiento distribuido, endpoints de inferencia. MLOps integrado.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Científico de datos necesita entrenar modelos propios → SageMaker. Usar IA preentrenada → Rekognition, Polly, etc.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="rekognition imagen video facial reconocimiento etiqueta">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">👁️</div>
+      <div class="sc-name">Amazon Rekognition<small>Análisis de imágenes y video con IA</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Analiza imágenes y videos: detección de objetos, escenas, texto (OCR), caras, celebridades, contenido inapropiado. Ideal para moderación de contenido, verificación de identidad, búsqueda visual.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>S3 (imagen) → Rekognition (análisis) → Lambda (lógica) → DynamoDB (resultados)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="polly texto voz tts text speech audio">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🗣️</div>
+      <div class="sc-name">Amazon Polly<small>Texto a voz (TTS)</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Convierte texto en voz realista con múltiples idiomas y voces. Voces neurales (NTTS) de mayor calidad. Ideal para accesibilidad, apps educativas, asistentes de voz.</div>
+      <div class="sc-tip"><strong>💡 Servicios de voz</strong>Polly = texto→voz. Transcribe = voz→texto. Lex = entender intención (chatbot).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="lex chatbot conversacional nlp dialogo bot">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">💬</div>
+      <div class="sc-name">Amazon Lex<small>Chatbots conversacionales (Alexa)</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Motor de NLP que impulsa Alexa. Crea chatbots con comprensión de lenguaje natural. Intents, slots, utterances. Integrado con Amazon Connect para call centers.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>Usuario habla → Lex (entiende) → Lambda (lógica de negocio) → responde</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="transcribe voz texto reconocimiento habla audio speech">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🎙️</div>
+      <div class="sc-name">Amazon Transcribe<small>Voz a texto (STT)</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Transcripción automática de voz a texto. Soporte multi-idioma, identificación de locutor, vocabulario personalizado. Ideal para transcribir llamadas de soporte, reuniones, videos.</div>
+      <div class="sc-tip"><strong>💡 Transcribe Medical</strong>Versión especializada para terminología médica.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="translate traduccion idioma texto lenguaje natural">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🌐</div>
+      <div class="sc-name">Amazon Translate<small>Traducción automática neuronal</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio de traducción de texto en tiempo real con NMT (Neural Machine Translation). Soporta 75+ idiomas. Ideal para localización de contenido, apps multilingüe, análisis de redes sociales globales.</div>
+      <div class="sc-tip"><strong>💡 Combinación</strong>Comprehend (detecta idioma) → Translate (traduce) → Polly (lee en voz alta)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="comprehend nlp sentimiento entidades texto analisis lenguaje">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📝</div>
+      <div class="sc-name">Amazon Comprehend<small>NLP – Análisis de texto</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio NLP para extraer insights de texto: análisis de sentimiento, detección de entidades (personas, lugares, fechas), clasificación de documentos, modelado de temas. Sin ML expertise requerido.</div>
+      <div class="sc-tip"><strong>💡 Caso de uso</strong>Analizar reseñas de clientes para detectar sentimiento positivo/negativo automáticamente.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="textract ocr formulario pdf documento extraer texto tabla">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📃</div>
+      <div class="sc-name">Amazon Textract<small>Extracción de texto de documentos</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">OCR avanzado que extrae texto Y estructura de documentos escaneados (PDFs, imágenes). Detecta tablas, formularios, campos y valores. Más inteligente que OCR simple.</div>
+      <div class="sc-tip"><strong>💡 Textract vs Rekognition</strong>Textract = extraer texto/datos de documentos. Rekognition (DetectText) = detectar texto en imágenes naturales.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="ml" data-tags="amazon q ia generativa chat asistente empresarial">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🤖</div>
+      <div class="sc-name">Amazon Q<small>IA Generativa para empresas</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Asistente de IA generativa para uso empresarial. Amazon Q Business (chatbot conectado a datos de la empresa) y Amazon Q Developer (asistente de código integrado en IDEs).</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Amazon Q = IA generativa de AWS. Q Developer = asistente de programación (compite con GitHub Copilot).</div>
+    </div>
+  </div>
+
+  <!-- MANAGEMENT -->
+  <div class="cat-label" data-cat="mgmt">⚙️ Administración y Gobernanza</div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="cloudwatch monitoreo metricas logs alarmas observabilidad">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📊</div>
+      <div class="sc-name">Amazon CloudWatch<small>Monitoreo y observabilidad</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio central de monitoreo: métricas (CPU, red, custom), logs (CloudWatch Logs), dashboards, alarmas, eventos. Retención de logs configurable. Container Insights, Lambda Insights.</div>
+      <div class="sc-tip"><strong>💡 Integración</strong>EC2/Lambda → CloudWatch (métricas/logs) → Alarma → SNS (notificación) / Auto Scaling (acción)</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="cloudtrail auditoria api llamadas registro actividad quien hizo que">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🕵️</div>
+      <div class="sc-name">AWS CloudTrail<small>Auditoría de llamadas API</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Registra TODAS las llamadas API realizadas en tu cuenta AWS (quién, qué, cuándo, desde dónde). Habilitado por defecto, retención de 90 días. Para compliance, auditoría forense y seguridad.</div>
+      <div class="sc-tip"><strong>💡 CloudTrail vs CloudWatch</strong>CloudTrail = quién hizo QUÉ (auditoría). CloudWatch = cómo está FUNCIONANDO (monitoreo).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="cloudformation infraestructura codigo template stack iac">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📋</div>
+      <div class="sc-name">AWS CloudFormation<small>IaC – Infraestructura como código</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Crea y gestiona recursos AWS con templates YAML/JSON. Define stacks de infraestructura reproducibles. Soporte para drift detection, rollback automático, nested stacks.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>IaC nativo de AWS → CloudFormation. CDK = CloudFormation con código Python/TypeScript/Java.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="trusted advisor recomendaciones optimizacion costo seguridad rendimiento">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">💡</div>
+      <div class="sc-name">AWS Trusted Advisor<small>Recomendaciones de best practices</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Analiza tu cuenta AWS y da recomendaciones en 5 pilares: Optimización de costos, Rendimiento, Seguridad, Tolerancia a fallos, Límites de servicio. Basic: 7 checks. Business/Enterprise: todos.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>¿Quién da recomendaciones automáticas de optimización? → Trusted Advisor. ¿Reportes de compliance? → Artifact.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="organizations multi cuenta control tower landing zone scp politica">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🏢</div>
+      <div class="sc-name">AWS Organizations<small>Gestión de múltiples cuentas</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Agrupa y gestiona múltiples cuentas AWS. Políticas de control de servicio (SCP) para establecer límites en toda la organización. Facturación consolidada, descuentos por volumen.</div>
+      <div class="sc-tip"><strong>💡 SCP</strong>Service Control Policies = guardrails que se aplican a todas las cuentas miembro, incluso root. No otorgan permisos, solo limitan.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="auto scaling escalado automatico capacidad carga">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📈</div>
+      <div class="sc-name">AWS Auto Scaling<small>Escalado automático de recursos</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Ajusta automáticamente la capacidad de recursos según la demanda. Escalado dinámico (basado en métricas CloudWatch) y predictivo (ML). Aplica a EC2, ECS, DynamoDB, Aurora.</div>
+      <div class="sc-tip"><strong>💡 EC2 Auto Scaling</strong>Define mínimo, máximo y deseado de instancias. Scale-out cuando CPU &gt; X%, scale-in cuando &lt; Y%.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="config configuracion historial cambios compliance reglas">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📷</div>
+      <div class="sc-name">AWS Config<small>Historial de configuración y compliance</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Registra el historial de configuración de recursos AWS y evalúa compliance contra reglas. Detecta cuando un recurso se desvía del estado deseado. Útil para auditorías y troubleshooting.</div>
+      <div class="sc-tip"><strong>💡 Config vs CloudTrail</strong>Config = estado del recurso (qué cambió en la config). CloudTrail = quién hizo la acción API.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="mgmt" data-tags="systems manager ssm patch manager session manager parametro inventario">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔧</div>
+      <div class="sc-name">AWS Systems Manager<small>Gestión operacional de instancias</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Suite de herramientas: Session Manager (SSH sin abrir puertos), Patch Manager (parcheo automático), Parameter Store (config/secretos), Run Command (ejecutar comandos en flota), Inventory.</div>
+      <div class="sc-tip"><strong>💡 Session Manager</strong>Acceder a EC2 sin SSH, sin key pairs, sin Security Groups abiertos. Todo auditado en CloudTrail.</div>
+    </div>
+  </div>
+
+  <!-- MIGRATION -->
+  <div class="cat-label" data-cat="migration">🚚 Migración y Transferencia</div>
+
+  <div class="service-card" data-cat="migration" data-tags="snow snowball snowmobile transferencia datos fisico offline">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">❄️</div>
+      <div class="sc-name">AWS Snow Family<small>Transferencia física de datos masivos</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc"><strong>Snowcone:</strong> 8TB, portátil. <strong>Snowball Edge:</strong> 80TB, compute y storage. <strong>Snowmobile:</strong> 100PB, camión. Cuando la red es demasiado lenta o costosa para transferir datos.</div>
+      <div class="sc-tip"><strong>💡 Regla general</strong>Si transferir via red demoraría más de 1 semana → considerar Snow Family.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="migration" data-tags="dms database migration service migracion base datos homogenea heterogenea">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔄</div>
+      <div class="sc-name">AWS DMS<small>Database Migration Service</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Migra bases de datos hacia AWS con mínimo downtime. Soporta migraciones homogéneas (MySQL→RDS MySQL) y heterogéneas (Oracle→Aurora). CDC (Change Data Capture) para replicación continua.</div>
+      <div class="sc-tip"><strong>💡 + SCT</strong>DMS + Schema Conversion Tool (SCT) = migración completa de BD heterogéneas (Oracle → PostgreSQL).</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="migration" data-tags="migration hub centro migracion seguimiento track">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🗺️</div>
+      <div class="sc-name">AWS Migration Hub<small>Centro de seguimiento de migraciones</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Panel centralizado para rastrear el progreso de migraciones de aplicaciones a AWS. Integrado con Application Discovery Service, Application Migration Service y DMS.</div>
+      <div class="sc-tip"><strong>💡 Flujo</strong>Discovery Service (inventario) → Migration Hub (plan) → Application Migration Service (migrar)</div>
+    </div>
+  </div>
+
+  <!-- SERVERLESS -->
+  <div class="cat-label" data-cat="serverless">⚡ Serverless</div>
+
+  <div class="service-card" data-cat="serverless" data-tags="lambda funcion serverless evento trigger codigo sin servidor">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">λ</div>
+      <div class="sc-name">AWS Lambda<small>Funciones serverless basadas en eventos</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Ejecuta código sin gestionar servidores. Triggers: API Gateway, S3, DynamoDB Streams, EventBridge, SQS, SNS y más. Límite 15 min. Escala automáticamente. Pagas por ms de ejecución.</div>
+      <div class="sc-tip"><strong>💡 Concurrencia</strong>Lambda puede ejecutar miles de instancias simultáneas. Reserva concurrencia para funciones críticas.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="serverless" data-tags="fargate contenedor serverless ecs eks sin servidor">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🚀</div>
+      <div class="sc-name">AWS Fargate<small>Contenedores serverless</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Motor de cómputo serverless para contenedores con ECS y EKS. No gestionas EC2 ni clústeres. Defines CPU/memoria por tarea y pagas por lo usado. Ideal para cargas intermitentes.</div>
+      <div class="sc-tip"><strong>💡 Fargate vs Lambda</strong>Fargate = contenedores largos (sin límite de tiempo). Lambda = funciones cortas (max 15min).</div>
+    </div>
+  </div>
+
+  <!-- DEV TOOLS -->
+  <div class="cat-label" data-cat="devtools">🛠️ Herramientas para Desarrolladores</div>
+
+  <div class="service-card" data-cat="devtools" data-tags="codebuild build ci compilar test prueba continua">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔨</div>
+      <div class="sc-name">AWS CodeBuild<small>CI – Build y test automatizados</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Servicio de integración continua (CI) totalmente gestionado. Compila código, ejecuta pruebas y produce artefactos listos para desplegar. Sin servidores de Jenkins que gestionar.</div>
+      <div class="sc-tip"><strong>💡 Pipeline CI/CD</strong>CodeCommit (repo) → CodeBuild (build/test) → CodeDeploy (deploy) → orquestado por CodePipeline</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="devtools" data-tags="codepipeline pipeline cicd entrega continua automatizacion deploy">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔁</div>
+      <div class="sc-name">AWS CodePipeline<small>CD – Pipeline de entrega continua</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Orquesta pipelines de CI/CD completos. Define etapas: source → build → test → deploy. Integra GitHub, Bitbucket, S3, CodeBuild, CloudFormation, ECS, Lambda y más.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>CodePipeline = orquestador del flujo. CodeBuild = quien construye. CodeDeploy = quien despliega.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="devtools" data-tags="xray trazabilidad debug microservicios latencia trace">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🔬</div>
+      <div class="sc-name">AWS X-Ray<small>Trazabilidad distribuida</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Analiza y depura aplicaciones distribuidas. Traza requests a través de microservicios, Lambda, EC2, ECS. Service map visual, análisis de latencia, identificación de cuellos de botella.</div>
+      <div class="sc-tip"><strong>💡 Caso de uso</strong>¿Por qué mi API tarda 2s? X-Ray muestra que Lambda tarda 10ms pero RDS tarda 1.9s → bottleneck identificado.</div>
+    </div>
+  </div>
+
+  <!-- FINANCE -->
+  <div class="cat-label" data-cat="finance">💰 Administración Financiera en la Nube</div>
+
+  <div class="service-card" data-cat="finance" data-tags="budgets presupuesto alerta costo gasto limite">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📊</div>
+      <div class="sc-name">AWS Budgets<small>Alertas de presupuesto</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Define presupuestos de costo y uso. Recibe alertas (email, SNS) cuando el gasto real o proyectado supera umbrales. Presupuestos por servicio, linked account, tag o reservas.</div>
+      <div class="sc-tip"><strong>💡 Budgets vs Cost Explorer</strong>Budgets = alertas proactivas de límites. Cost Explorer = análisis histórico y visualización de gasto.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="finance" data-tags="cost explorer analisis gasto historico tendencia forecast">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">📈</div>
+      <div class="sc-name">AWS Cost Explorer<small>Análisis visual de costos</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Visualiza, analiza y gestiona costos y uso de AWS. Gráficos de tendencias, filtros por servicio/cuenta/tag, forecast de 12 meses. Recomendaciones de Reserved Instances y Savings Plans.</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>¿Cuánto gastaste el mes pasado por servicio? → Cost Explorer. ¿Cuánto gastarás si sigues así? → Cost Explorer Forecast.</div>
+    </div>
+  </div>
+
+  <div class="service-card" data-cat="finance" data-tags="marketplace software terceros comprar vender suscripcion ami">
+    <div class="sc-header" onclick="toggleSC(this)">
+      <div class="sc-icon">🛒</div>
+      <div class="sc-name">AWS Marketplace<small>Tienda de software de terceros</small></div>
+      <div class="card-arrow">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">Catálogo digital de software de terceros: AMIs preconfiguradas, SaaS, containers, ML models. Facturación integrada en la cuenta AWS. Miles de soluciones (firewalls, CRMs, herramientas DevOps).</div>
+      <div class="sc-tip"><strong>💡 Tip examen</strong>Comprar software de terceros con facturación AWS → Marketplace. No confundir con AWS Service Catalog.</div>
+    </div>
+  </div>
+
+  </div><!-- end service-list -->
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function toggleCard(header) {
+  header.parentElement.classList.toggle('open');
+}
+
+function toggleSC(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+let currentCat = 'all';
+
+function filterCat(chip, cat) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  currentCat = cat;
+  applyServiceFilter();
+}
+
+function applyServiceFilter() {
+  const q = (document.getElementById('serviceSearch').value || '').toLowerCase();
+  document.querySelectorAll('.service-card').forEach(card => {
+    const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
+    const tags = (card.dataset.tags || '') + card.querySelector('.sc-name').textContent.toLowerCase();
+    const textMatch = !q || tags.includes(q);
+    card.classList.toggle('hidden', !(catMatch && textMatch));
+  });
+  document.querySelectorAll('.cat-label[data-cat]').forEach(label => {
+    if (currentCat === 'all') { label.classList.remove('hidden'); return; }
+    label.classList.toggle('hidden', label.dataset.cat !== currentCat);
+  });
+}
+
+function filterServices() { applyServiceFilter(); }
+
+function filterConcepts() {
+  const q = document.getElementById('conceptSearch').value.toLowerCase();
+  document.querySelectorAll('#concepto-list .card').forEach(card => {
+    const tags = (card.dataset.tags || '') + card.textContent.toLowerCase();
+    card.classList.toggle('hidden', q && !tags.includes(q));
+  });
+}
+</script>
+</body>
+</html>
